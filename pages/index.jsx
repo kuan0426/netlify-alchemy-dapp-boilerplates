@@ -6,6 +6,7 @@ export default function Home() {
     <div>
       <main className={styles.main}>
         <InstructionsComponent></InstructionsComponent>
+        Hi
       </main>
     </div>
   );

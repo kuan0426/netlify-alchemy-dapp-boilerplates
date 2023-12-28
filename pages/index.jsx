@@ -4,7 +4,7 @@ import InstructionsComponent from "../components/InstructionsComponent";
 export default function Home() {
   return (
     <div>
-      < link rel="icon" href="https://gravatar.com/userimage/157602719/354ab170de7bc9e413cf26172b6473bc.jpeg?size=50" type="image/x-icon" / >
+      < link rel="icon" href="https://i.seadn.io/gae/ZFwSEkFGjvZUF6H51whQekBEi7tgxgh42WwNcCHTFYFsWH35P6iueCinhZzN_GuD5EBG6nXkvC13ADPvN9T6zR7OEQJ_tb0Q2J4?auto=format&dpr=1&w=90" type="image/x-icon" / >
       <main className={styles.main}>
         <InstructionsComponent>123456</InstructionsComponent>
         Hi

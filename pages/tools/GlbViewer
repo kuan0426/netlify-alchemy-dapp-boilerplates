@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Preview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #preview {
+            width: 100%;
+            height: 80vh;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group button:disabled {
+            background-color: #ccc;
+        }
+    </style>
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.min.js",
+                "three/examples/jsm/controls/OrbitControls.js": "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/controls/OrbitControls.js",
+                "three/examples/jsm/loaders/GLTFLoader.js": "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js"
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <h1>3D Model Preview</h1>
+    <div class="form-group">
+        <input type="file" id="file" accept=".glb">
+        <button id="loadButton" disabled>Load 3D Model</button>
+    </div>
+    <div id="preview"></div>
+
+    <!-- 使用最新版本的 three.js 和 GLTFLoader -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+        const fileInput = document.getElementById('file');
+        const loadButton = document.getElementById('loadButton');
+        const preview = document.getElementById('preview');
+
+        let isAnimating = true; // 控制動畫的變量
+
+        fileInput.addEventListener('change', () => {
+            loadButton.disabled = fileInput.files.length === 0;
+        });
+
+        loadButton.addEventListener('click', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                loadGLBModel(url);
+            }
+        });
+
+        function loadGLBModel(url) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, preview.clientWidth / preview.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(preview.clientWidth, preview.clientHeight);
+            preview.innerHTML = '';
+            preview.appendChild(renderer.domElement);
+
+            // 添加光源
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const pointLight1 = new THREE.PointLight(0xff00ff, 1); // 洋紅色燈光
+            pointLight1.position.set(-5, 5, -5);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0x0000ff, 1); // 藍色燈光
+            pointLight2.position.set(5, 5, -5);
+            scene.add(pointLight2);
+
+            const pointLight3 = new THREE.PointLight(0xffffff, 1); // 白色燈光
+            pointLight3.position.set(0, 5, 5);
+            scene.add(pointLight3);
+
+            const pointLight4 = new THREE.PointLight(0x00ff00, 1); // 綠色燈光
+            pointLight4.position.set(0, -5, 0);
+            scene.add(pointLight4);
+
+            // 添加 OrbitControls
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true; // 啟用阻尼效果
+            controls.dampingFactor = 0.25; // 阻尼系數
+            controls.screenSpacePanning = false; // 禁用屏幕空間平移
+            controls.minDistance = 1; // 最小縮放距離
+            controls.maxDistance = 100; // 最大縮放距離
+
+            // 鍵盤控制
+            document.addEventListener('keydown', (event) => {
+                const step = 0.1;
+                switch (event.key) {
+                    case 'ArrowUp': scene.position.y -= step;
+                        break;
+                    case 'ArrowDown': scene.position.y += step;
+                        break;
+                    case 'ArrowLeft': scene.position.x += step;
+                        break;
+                    case 'ArrowRight': scene.position.x -= step;
+                        break;
+                    case ' ': // 空白鍵控制動畫
+                    isAnimating = !isAnimating;
+                    break;
+                }
+            });
+
+            const loader = new GLTFLoader();
+            loader.load(url, (gltf) => {
+                scene.add(gltf.scene);
+                camera.position.z = 5;
+                const animate = function () {
+                    requestAnimationFrame(animate);
+                    if (isAnimating) {
+                        gltf.scene.rotation.y += 0.01;
+                    }
+                    controls.update(); // 更新控制器
+                    renderer.render(scene, camera);
+                };
+                animate();
+            }, undefined, (error) => {
+                console.error('Error loading GLB model:', error);
+                alert('Error loading GLB model. Please check the console for more details.');
+            });
+        }
+    </script>
+</body>
+</html>

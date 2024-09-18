@@ -1,6 +1,9 @@
 import styles from "../styles/Home.module.css";
 import InstructionsComponent from "../components/InstructionsComponent";
 
+<h1>歡迎來到我的 DApp</h1>
+
+
 export default function Home() {
   return (
     <div>

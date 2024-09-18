@@ -1,5 +1,6 @@
 import styles from "../styles/InstructionsComponent.module.css";
 import Router, { useRouter } from "next/router";
+import NFTGallery from '../components/NFTGallery';
 export default function InstructionsComponent() {
 	const router = useRouter();
 	return (
@@ -16,7 +17,7 @@ export default function InstructionsComponent() {
 				<p>這是首頁的介紹段落。</p>
 			</header>
 
-			<NFT_Gallery />
+			<NFTGallery />
 
 			<div className={styles.buttons_container}>
 

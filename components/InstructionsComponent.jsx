@@ -12,9 +12,14 @@ export default function InstructionsComponent() {
 					Get started by editing this page in{" "}
 					<span>/pages/index.js</span>
 				</p>
+				<h1>歡迎來到我的 DApp</h1>
+				<p>這是首頁的介紹段落。</p>
 			</header>
 
+			<NFT_Gallery />
+
 			<div className={styles.buttons_container}>
+
 				<a
 					target={"_blank"}
 					href={"https://createweb3dapp.alchemy.com/#components"}

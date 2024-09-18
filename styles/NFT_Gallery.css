@@ -1,0 +1,14 @@
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .nft {
+    margin: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  .nft img {
+    max-width: 100%;
+    height: auto;
+  }
+  

@@ -17,7 +17,7 @@ export default function InstructionsComponent() {
 				<p>這是首頁的介紹段落。</p>
 			</header>
 
-			<NFTGallery />
+			<NFTGallery> 5678 </NFTGallery>
 
 			<div className={styles.buttons_container}>
 
